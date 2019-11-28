@@ -1,10 +1,11 @@
 ---
-title: "Trabajo_final_R"
+title: "Trabajo Final R"
 author: "Melino Manrique Irus"
 date: "28/11/2019"
 output:
   prettydoc::html_pretty:
-    theme: cayman 
+    theme: cayman
+    toc: true 
 ---
 
 ```{r setup, include=FALSE}
@@ -39,7 +40,7 @@ La segunda página está mucho mejor estructurada y visualmente es más agradabl
 Para la siguiente sección se utilizaron dos páginas que contienen diversos recursos sobre la utilidad y usabilidad de Markdown:
 
 * [Markdown.es](https://markdown.es/)
-* [Guia para empezar con Markdown] (http://www.unavarra.es/personal/tgoicoa/ESTADISTICA_RMarkdown_tomas/basicRmarkdown/index.html)
+* [Guia para empezar con Markdown](http://www.unavarra.es/personal/tgoicoa/ESTADISTICA_RMarkdown_tomas/basicRmarkdown/index.html)
 
 Habiendo disfrutado de ambas páginas dedicadas a brindar información al usuario sobre Markdown desde distintos puntos de vista y ámbitos, la página que mas me ayudó de forma personal y en gran manera a profundizar mis conocimientos y poder aplicar esta herramienta en mis trabajos diarios fue la segunda. LLego a ésta conclusión ya que la primera página aunque también me sirvió de gran manera y presenta un video muy interactivo, me parece muy corta y que la informacion que brinda al usuario se queda en el aire sin profundizar directamente sobre el tema y la apicación de lo que es Markdown en sí. Del otro lado, la segunda página es una guía que acompaña al usuario desde el principio hasta lo que respecta a generar el documento en Markdown.
 
@@ -49,10 +50,10 @@ Habiendo disfrutado de ambas páginas dedicadas a brindar información al usuari
 Primero que nada, el conjunto de datos que voy a analizar para propósitos académicos son los principales mercados a los que el Perú exporta a nivel mundial, englobando el total de productos exportados en miles de dólares para los últimos cinco años en cuestión (2014-2018). 
 Los datos han sido obtenidos mediante [TradeMap]('https://www.trademap.org/') la cual es una página de estadística muy confiable a nivel mundial que proporciona una serie de datos por países y comercio exterior de cada uno de ellos.
 
-
+### 3.1 Principales destinos de Exportación peruanos 2014-2018
 
 ```{r, echo=FALSE, include=FALSE}
-data<-read.csv('dat/trade_map.csv', sep = ';', skip = 14)
+data<-read.csv('trade_map.csv', sep = ';', skip = 14)
 #limpieza de los datos
 colnames(data)[1:6]=c('pais', 'ano_2014', 'ano_2015', 'ano_2016',
                       'ano_2017', 'ano_2018')
@@ -72,6 +73,7 @@ Tabla <- kable(head(data), align = "l") %>%
 Tabla
 ```
 
+### 3.2 Evolución de las exportaciones peruanas 2014-2018
 
 Para poder ver cómo ha ido evolucionando las exportaciones peruanas a lo largo de los ultimos cinco años y por un tema gráfico, veremos únicamente la evolución de los cinco principales socios comercializadores de la Región.
 
@@ -94,6 +96,8 @@ p <- ggplot(data.of, aes(x = periodo, y = valor_exportado, group = pais, color =
   
 ggplotly(p)
 ```
+
+### 3.3 Evolución de las exportaciones peruanas por país
 
 Ya que en la primera gráfica sólo podemos apreciar de buena forma las cifras de China y Estados Unidos ya que se encuentran muy por encima del resto y las demás al mantener aproximadamente los mismos valores de exportación dificultan la vista, veremos una gráfica que nos divide el valor exportado por destino.
 Con esto podremos apreciar de mejor forma la tendencia y el valor exportado de las regiones de Corea, India, Japón y Suiza. Veamos:
