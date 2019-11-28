@@ -1,0 +1,114 @@
+---
+title: "Trabajo_final_R"
+author: "Melino Manrique Irus"
+date: "28/11/2019"
+output:
+  prettydoc::html_pretty:
+    theme: cayman
+---
+
+```{r setup, include=FALSE}
+
+library(reshape2)
+library(ggplot2)
+library(plotly)
+library(scales)
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## 1. Análisis de páginas con recursos sobre Expresiones Regulares
+
+Para la siguiente sección se hizo el análisis de dos páginas que contienen diversos recursos sobre expresiones regulares: 
+
+* [Guia para entender y aprender expresiones regulares](https://www.adictosaltrabajo.com/2015/01/29/regexsam/)
+* [Apartado de expresiones regulares de Raúl E.Lopez Briega](https://relopezbriega.github.io/blog/2015/07/19/expresiones-regulares-con-python/)
+
+Primero que nada, antes de realizar un análisis comparativo entre las dos páginas estudiadas, nos centraremos en una forma breve en lo que nos muestra cada una de estas páginas. La primera pagina es mas que nada una guia desde cero para el usuario en la que nos brinda una pequeña introduccion del tema de expresiones regulares, desarrolla la sintaxis en general y luego brinda ejercicios y conclusiones sobre el tema.
+La segunda página está abocada al mismo tema pero desde otro ángulo, ésta pagina se centra de mejor manera en qué son las expresiones regulares, sus componentes, clases de caracteres, los metacaracteres, entre otros. 
+Aunque esta página y sus ejemplos estan más ligados a `Python`, es casi la misma sintaxis que se utiliza en `R` y puede servir de mucha ayuda si el usuario está tratando de entender desde un nivel de principiante el tema de expresiones regulares. 
+Si tenemos que hacer una comparación de ambas páginas notamos que la primera es muy interactica con el usuario pero también de cierta forma te brinda la informacion muy masticada y no te da libertad para ir mas allá o profundizar en el tema, esto debe de ser ya que la página está desarrolada para un usuario que quiere aprender desde cero el tema y nunca había hecho usos de expresiones regulares. 
+La segunda página está mucho mejor estructurada y visualmente es más agradable para el usuario, además profundiza en gran manera en la aplicación de las expresiones regulares y obliga al lector a pensar y quedarse algunos segundos mas en la página tratando de entender de donde salen las respuestas.
+
+
+## 2. Análisis de páginas con recursos sobre Markdown
+
+Para la siguiente sección se utilizaron dos páginas que contienen diversos recursos sobre la utilidad y usabilidad de Markdown:
+
+* [Markdown.es](https://markdown.es/)
+* [Guia para empezar con Markdown] (http://www.unavarra.es/personal/tgoicoa/ESTADISTICA_RMarkdown_tomas/basicRmarkdown/index.html)
+
+Habiendo disfrutado de ambas páginas dedicadas a brindar información al usuario sobre Markdown desde distintos puntos de vista y ámbitos, la página que mas me ayudó de forma personal y en gran manera a profundizar mis conocimientos y poder aplicar esta herramienta en mis trabajos diarios fue la segunda. LLego a ésta conclusión ya que la primera página aunque también me sirvió de gran manera y presenta un video muy interactivo, me parece muy corta y que la informacion que brinda al usuario se queda en el aire sin profundizar directamente sobre el tema y la apicación de lo que es Markdown en sí. Del otro lado, la segunda página es una guía que acompaña al usuario desde el principio hasta lo que respecta a generar el documento en Markdown.
+
+
+## 3. Obtención de los datos
+
+Primero que nada, el conjunto de datos que voy a analizar para propósitos académicos son los principales mercados a los que el Perú exporta a nivel mundial, englobando el total de productos exportados en miles de dólares para los últimos cinco años en cuestión (2014-2018). 
+Los datos han sido obtenidos mediante [TradeMap]('https://www.trademap.org/') la cual es una página de estadística muy confiable a nivel mundial que proporciona una serie de datos por países y comercio exterior de cada uno de ellos.
+
+
+
+```{r, echo=FALSE, include=FALSE}
+data<-read.csv('dat/trade_map.csv', sep = ';', skip = 14)
+#limpieza de los datos
+colnames(data)[1:6]=c('pais', 'ano_2014', 'ano_2015', 'ano_2016',
+                      'ano_2017', 'ano_2018')
+str(data)
+data$ano_2014 = as.numeric(gsub(',', '', data$ano_2014))
+data$ano_2015 = as.numeric(gsub(',', '', data$ano_2015))
+data$ano_2016 = as.numeric(gsub(',', '', data$ano_2016))
+data$ano_2017 = as.numeric(gsub(',', '', data$ano_2017))
+data$ano_2018 = as.numeric(gsub(',', '', data$ano_2018))
+data.of = melt(head(data, 6))
+colnames(data.of)[2:3]<-c('periodo', 'valor_exportado' )
+```
+
+```{r, echo=FALSE}
+head(data)
+```
+
+
+Para poder ver cómo ha ido evolucionando las exportaciones peruanas a lo largo de los ultimos cinco años y por un tema gráfico, veremos únicamente la evolución de los cinco principales socios comercializadores de la Región.
+
+```{r, echo=FALSE}
+
+p <- ggplot(data.of, aes(x = periodo, y = valor_exportado, group = pais, color = pais)) + 
+  geom_line(size = 2) + geom_point(size = 4) + scale_colour_hue(name = "Paises", l = 30) + 
+  scale_y_continuous(name = "Valor exportado (miles de US)", labels = comma, breaks =seq (0, 14000000, 2000000)) + 
+  xlab('Periodo') + ggtitle('Principales destinos de Exportación 2014-2018') + 
+  theme (plot.title = element_text(family = "Comic Sans MS",
+                                   hjust = 0.5,
+                                   size = rel(1.5),
+                                   vjust = 2,
+                                   face = "bold", 
+                                   color = "red", 
+                                   lineheight = 1.5)) + 
+  theme(axis.title.x = element_text(family = "Comic Sans MS", face = "bold", vjust = -0.5, colour = "brown", size = rel(1.2))) +
+  theme(axis.title.y = element_text(family = "Comic Sans MS", face = "bold", vjust = -0.5, colour = "blue", size = rel(1.2)))
+  
+  
+ggplotly(p)
+```
+
+Ya que en la primera gráfica sólo podemos apreciar de buena forma las cifras de China y Estados Unidos ya que se encuentran muy por encima del resto y las demás al mantener aproximadamente los mismos valores de exportación dificultan la vista, veremos una gráfica que nos divide el valor exportado por destino.
+Con esto podremos apreciar de mejor forma la tendencia y el valor exportado de las regiones de Corea, India, Japón y Suiza. Veamos:
+
+```{r, echo=FALSE}
+p_wrap<- ggplot(data.of, aes(x = periodo, y = valor_exportado, group = pais, color = pais)) + 
+    geom_line(size=2) + geom_point(size=4) + scale_colour_hue(name="Paises", l=30) + 
+    scale_y_continuous(name="", labels = comma, breaks=seq(0, 14000000, 2000000)) + 
+    xlab('') + ggtitle('Principales destinos de Exportación 2014-2018') + 
+    theme (plot.title = element_text(family="Comic Sans MS",
+                                     hjust = 0.5,
+                                     size=rel(1.5),
+                                     vjust=2,
+                                     face="bold", 
+                                     color="red", 
+                                     lineheight=1.5)) + 
+    facet_wrap(~pais, ncol =3) + theme(axis.text.x = element_text(angle = 50, hjust = 1))
+ 
+ggplotly(p_wrap)
+```
+
+
+
+
