@@ -4,15 +4,19 @@ author: "Melino Manrique Irus"
 date: "28/11/2019"
 output:
   prettydoc::html_pretty:
-    theme: cayman
+    theme: cayman 
 ---
 
 ```{r setup, include=FALSE}
 
+library(prettydoc)
 library(reshape2)
 library(ggplot2)
 library(plotly)
 library(scales)
+library(kableExtra)
+library(knitr)
+
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
@@ -63,7 +67,9 @@ colnames(data.of)[2:3]<-c('periodo', 'valor_exportado' )
 ```
 
 ```{r, echo=FALSE}
-head(data)
+Tabla <- kable(head(data), align = "l") %>%
+  kable_styling(bootstrap_options = "striped", full_width = F)
+Tabla
 ```
 
 
