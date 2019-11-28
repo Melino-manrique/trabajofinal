@@ -8,6 +8,8 @@ Este proyecto contiene algunas instrucciones a seguir para poder ser visto y uti
 * install.packages("reshape2")
 * install.packages("plotly")
 * install.packages("scales")
+* install.packages("kableExtra")
+* install.packages("knitr")
 
 ## Paquetes utilizados en el desarrollo:
 
@@ -16,6 +18,8 @@ Este proyecto contiene algunas instrucciones a seguir para poder ser visto y uti
 * library(ggplot2)
 * library(plotly)
 * library(scales)
+* library(kableExtra)
+* library(knitr)
 
 ## Data
 
