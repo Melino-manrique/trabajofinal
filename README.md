@@ -3,19 +3,19 @@ Este proyecto contiene algunas instrucciones a seguir para poder ser visto y uti
 
 ## Paquetes a instalar:
 
-*install.packages("prettydoc")
-*install.packages("ggplot2")
-*install.packages("reshape2")
-*install.packages("plotly")
-*install.packages("scales")
+*  install.packages("prettydoc")
+* install.packages("ggplot2")
+* install.packages("reshape2")
+* install.packages("plotly")
+* install.packages("scales")
 
 ## Paquetes utilizados en el desarrollo:
 
-*library(prettydoc)
-*library(reshape2)
-*library(ggplot2)
-*library(plotly)
-*library(scales)
+* library(prettydoc)
+* library(reshape2)
+* library(ggplot2)
+* library(plotly)
+* library(scales)
 
 ## Data
 
